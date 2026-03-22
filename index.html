@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>25 Jahre Uhlenköper-Camp – Quiz</title>
+  <link rel="icon" type="image/png" href="Logo.png">
+  <style>
+    :root {
+      --green-dark:  #1e5c3a;
+      --green-mid:   #2d8653;
+      --green-light: #52b77a;
+      --green-pale:  #e4f5ec;
+      --orange:      #f4a261;
+      --orange-dark: #e07040;
+      --bg:          #eef7f1;
+      --card:        #ffffff;
+      --text:        #1a3d29;
+      --text-muted:  #5a7a66;
+      --border:      #d4e8da;
+      --radius:      18px;
+      --shadow:      0 4px 24px rgba(30,92,58,0.10);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 32px;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: linear-gradient(150deg, var(--green-dark) 0%, var(--green-mid) 100%);
+      padding: 18px 20px 14px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .site-header img { height: 44px; vertical-align: middle; margin-right: 10px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3)); }
+    .site-header span { color: #fff; font-size: 1.05em; font-weight: 700; vertical-align: middle; letter-spacing: 0.2px; }
+
+    /* ── CONTAINER ── */
+    .wrap { max-width: 620px; margin: 0 auto; padding: 20px 16px 0; }
+
+    /* ── SCREEN HELPERS ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 22px;
+    }
+
+    /* ── START SCREEN ── */
+    .start-logo-wrap {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .start-logo-wrap img {
+      width: min(200px, 55vw);
+      filter: drop-shadow(0 2px 8px rgba(30,92,58,0.18));
+    }
+    .start-title {
+      font-size: clamp(1.4em, 5vw, 2em);
+      font-weight: 800;
+      color: var(--green-dark);
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .start-sub {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95em;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .info-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+    .info-box {
+      flex: 1;
+      background: var(--green-pale);
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .info-box .ib-icon { font-size: 1.6em; line-height: 1; margin-bottom: 4px; }
+    .info-box .ib-val  { font-size: 1.1em; font-weight: 700; color: var(--green-dark); }
+    .info-box .ib-lbl  { font-size: 0.75em; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { margin-bottom: 16px; }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 7px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+      border-radius: 4px;
+      transition: width 0.35s ease;
+    }
+
+    /* ── QUESTION CARD ── */
+    .q-badge {
+      display: inline-block;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 0.72em;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .q-text {
+      font-size: clamp(1em, 3.5vw, 1.12em);
+      font-weight: 600;
+      line-height: 1.55;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .q-image {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      border: 2px solid var(--border);
+    }
+
+    /* ── CHOICES ── */
+    .choices { display: flex; flex-direction: column; gap: 10px; }
+    .choice-btn {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 13px;
+      background: #fff;
+      font-size: 0.95em;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.18s, background 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .choice-btn:active { background: var(--green-pale); }
+    .choice-btn.selected {
+      border-color: var(--green-mid);
+      background: var(--green-pale);
+      font-weight: 600;
+    }
+    .indicator {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75em; font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.18s;
+      color: transparent;
+    }
+    .choice-btn.selected .indicator {
+      background: var(--green-mid);
+      border-color: var(--green-mid);
+      color: #fff;
+    }
+    /* Square indicator for checkboxes */
+    .choice-btn.checkbox .indicator { border-radius: 6px; }
+
+    /* ── COUNTER ── */
+    .counter-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin: 8px 0 10px;
+    }
+    .counter-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: var(--green-mid);
+      color: #fff;
+      font-size: 1.6em;
+      line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .counter-btn:active { background: var(--green-dark); }
+    .counter-btn:disabled { background: #ccc; cursor: default; }
+    .counter-val {
+      font-size: 2.8em;
+      font-weight: 800;
+      color: var(--green-dark);
+      min-width: 70px;
+      text-align: center;
+    }
+    .counter-hint {
+      text-align: center;
+      font-size: 0.8em;
+      color: var(--text-muted);
+    }
+
+    /* ── FREE TEXT ── */
+    .ft-inputs { display: flex; flex-direction: column; gap: 10px; }
+    .ft-input {
+      padding: 13px 15px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      font-size: 1em;
+      color: var(--text);
+      background: #fff;
+      width: 100%;
+      transition: border-color 0.18s;
+    }
+    .ft-input:focus { outline: none; border-color: var(--green-mid); }
+    .ft-hint { font-size: 0.78em; color: var(--text-muted); margin-top: 6px; }
+
+    /* ── KIOSK (number + suffix) ── */
+    .kiosk-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 8px 0;
+    }
+    .kiosk-input {
+      width: 90px;
+      padding: 14px 10px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      font-size: 1.4em;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text);
+      background: #fff;
+    }
+    .kiosk-input:focus { outline: none; border-color: var(--green-mid); }
+    .kiosk-suffix { font-size: 1.3em; color: var(--text-muted); font-weight: 500; }
+
+    /* ── NAV BUTTONS ── */
+    .nav-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .btn {
+      padding: 15px 22px;
+      border: none;
+      border-radius: 13px;
+      font-size: 1em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--green-mid); color: #fff; flex: 1; }
+    .btn-primary:active { background: var(--green-dark); }
+    .btn-secondary { background: #ebebeb; color: var(--text); }
+    .btn-secondary:active { background: #ddd; }
+    .btn-ghost { background: transparent; color: var(--text-muted); visibility: hidden; }
+
+    /* ── RESULTS ── */
+    .results-score-circle {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+      color: #fff;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      box-shadow: 0 4px 16px rgba(45,134,83,0.35);
+    }
+    .rs-num { font-size: 2.4em; font-weight: 800; line-height: 1; }
+    .rs-den { font-size: 0.8em; opacity: 0.85; }
+    .results-title {
+      font-size: 1.4em; font-weight: 800;
+      color: var(--green-dark);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .results-sub {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9em;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .tombola-banner {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: #fff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+    }
+    .tombola-banner h3 { font-size: 1.1em; margin-bottom: 6px; }
+    .tombola-banner p  { font-size: 0.88em; opacity: 0.92; line-height: 1.5; }
+    .no-tombola {
+      background: #f4f4f4;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88em;
+      line-height: 1.5;
+    }
+
+    /* ── REVIEW LIST ── */
+    .review-title {
+      font-size: 0.92em;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+    .review-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.86em;
+    }
+    .review-item:last-child { border-bottom: none; }
+    .review-icon { flex-shrink: 0; font-size: 1em; margin-top: 1px; }
+    .review-q { font-weight: 600; color: var(--text); }
+    .review-ans { color: var(--green-mid); font-size: 0.9em; margin-top: 2px; }
+
+    .btn-restart {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--green-mid);
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      font-size: 1em;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-restart:active { background: var(--green-dark); }
+
+    /* ── ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim { animation: fadeUp 0.28s ease; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <img src="Logo.png" alt="Logo">
+  <span>25 Jahre Uhlenköper-Camp</span>
+</header>
+
+<div class="wrap">
+
+  <!-- ════════════ START ════════════ -->
+  <div id="screen-start" class="screen active">
+    <div class="card anim">
+      <div class="start-logo-wrap">
+        <img src="Logo.png" alt="Uhlenköper-Camp Logo">
+      </div>
+      <div class="start-title">Das große Jubiläums-Quiz!</div>
+      <p class="start-sub">
+        Teste dein Wissen über den Uhlenköper-Camp und sichere dir eine Chance auf den Sondergewinn der Tombola!
+      </p>
+      <div class="info-row">
+        <div class="info-box">
+          <div class="ib-icon">❓</div>
+          <div class="ib-val">11</div>
+          <div class="ib-lbl">Fragen</div>
+        </div>
+        <div class="info-box">
+          <div class="ib-icon">🎫</div>
+          <div class="ib-val">&gt; 80 %</div>
+          <div class="ib-lbl">für Tombola</div>
+        </div>
+        <div class="info-box">
+          <div class="ib-icon">🏕️</div>
+          <div class="ib-val">Viel</div>
+          <div class="ib-lbl">Spaß!</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%; font-size:1.05em;" onclick="startQuiz()">Quiz starten &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ════════════ QUIZ ════════════ -->
+  <div id="screen-quiz" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="prog-label">Frage 1 von 11</span>
+        <span id="prog-pct">0 %</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div id="q-container"></div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" id="btn-back" onclick="goBack()">&#8592; Zurück</button>
+      <button class="btn btn-primary"   id="btn-next" onclick="goNext()">Weiter &#8594;</button>
+    </div>
+  </div>
+
+  <!-- ════════════ RESULTS ════════════ -->
+  <div id="screen-results" class="screen">
+    <div class="card anim" id="results-inner"></div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+// ─────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────
+const PIG_NAMES = [
+  'ayuka','linn','lin','lynn','ria','kenny','kenni','wim',
+  "käpt'n oink","captain oink",'tess','jaques','jaquelin'
+];
+
+const QUESTIONS = [
+  {
+    id:'wortsalat', title:'Wortsalat', type:'single',
+    q:'Was ist auf dem Dach?',
+    choices:['Lunarlüneburgen','Stellaruelzen','Solarcellen'],
+    correct:'Solarcellen'
+  },
+  {
+    id:'bunt', title:'Bunt', type:'single',
+    q:'Welches Motto wird von den drei Farben des Uhlenköper-Camp Logos repräsentiert?',
+    choices:['Zelten, Baden, Paddeln','Wiese, Sonne, Himmel','Reisen, Essen, Schlafen'],
+    correct:'Zelten, Baden, Paddeln'
+  },
+  {
+    id:'schweine', title:'Schweine', type:'freetext',
+    q:'Welche Schweinenamen kennst du? Nenne drei.',
+    fields:3,
+    hint:'Gib drei verschiedene Namen der Campingplatzschweine ein.',
+    check(vals) {
+      const seen = new Set();
+      for (const v of vals) {
+        const n = v.trim().toLowerCase();
+        if (n && PIG_NAMES.includes(n)) seen.add(n);
+      }
+      return seen.size >= 3;
+    }
+  },
+  {
+    id:'ikosaeder', title:'Ikosaeder', type:'counter',
+    q:'Wie viele Flächen hat ein Iko am Uhlenköper-Camp?\n(Der Boden zählt nicht.)',
+    min:0, max:25, correct:10
+  },
+  {
+    id:'flatter', title:'Flatter Flatter', type:'single',
+    q:'Welches der folgenden ist KEIN Schmetterling?',
+    choices:['Admiral','Kleiner Fuchs','Limonenfalter','Großes Ochsenauge'],
+    correct:'Limonenfalter'
+  },
+  {
+    id:'weyhe', title:'Weyhe', type:'single',
+    q:'Wie heißt der Ort hier?',
+    choices:['Süderweyhe','Westerweyhe','Norderweyhe','Osterweyhe'],
+    correct:'Westerweyhe'
+  },
+  {
+    id:'kiosk', title:'Kiosk', type:'number',
+    q:'Wie viel hat ein Cola-Kracher früher gekostet?',
+    suffix:'Cent', correct:'5'
+  },
+  {
+    id:'zelt', title:'Zelt', type:'single',
+    q:'Was ist hier abgebildet?',
+    image:'Tipi.JPG',
+    choices:['Tipi','Festzelt','Zauberzelt'],
+    correct:'Tipi'
+  },
+  {
+    id:'planschen', title:'Planschen mit Pflanzen', type:'single',
+    q:'Was kann man im NaturFreiBad finden?',
+    choices:['Schleichdolch','Weichstrolch','Teichmolch'],
+    correct:'Teichmolch'
+  },
+  {
+    id:'fuhrpark', title:'Fuhrpark', type:'single',
+    q:'Was kann man am Uhlenköper-Camp (bisher) nicht mieten?',
+    choices:['Hubschrauber','Boot','E-Auto','Fahrrad','E-Tandem'],
+    correct:'Hubschrauber'
+  },
+  {
+    id:'gewaechs', title:'Unsere Gewächswelt', type:'multi',
+    q:'Welche heimischen Pflanzen kann man hier finden?\n(Mehrere Antworten möglich)',
+    choices:['Spitzwegerich','Holunder','Urwaldmammutbaum','Haselnuss','Magnolienbaum','Froschlöffel'],
+    correct:['Spitzwegerich','Holunder','Haselnuss','Froschlöffel']
+  }
+];
+
+// ─────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────
+let idx = 0;
+let answers = {};
+let shuffled = {};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+// ─────────────────────────────────────────
+//  SCREENS
+// ─────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  idx = 0; answers = {}; shuffled = {};
+  QUESTIONS.forEach(q => { if (q.choices) shuffled[q.id] = shuffle(q.choices); });
+  showScreen('screen-quiz');
+  render();
+}
+
+// ─────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────
+function render() {
+  const q = QUESTIONS[idx];
+  const total = QUESTIONS.length;
+  const pct = Math.round(idx / total * 100);
+
+  document.getElementById('prog-label').textContent = `Frage ${idx+1} von ${total}`;
+  document.getElementById('prog-pct').textContent   = pct + ' %';
+  document.getElementById('prog-fill').style.width  = pct + '%';
+  document.getElementById('btn-back').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = idx === total-1 ? 'Auswerten ✓' : 'Weiter →';
+
+  const c = document.getElementById('q-container');
+  c.innerHTML = '';
+
+  const card = el('div', 'card anim');
+
+  // Badge
+  card.appendChild(el('div','q-badge', q.title));
+
+  // Question text
+  const qt = el('div','q-text');
+  qt.innerHTML = q.q.replace(/\n/g,'<br>');
+  card.appendChild(qt);
+
+  // Optional image
+  if (q.image) {
+    const img = document.createElement('img');
+    img.src = q.image; img.alt = 'Bild'; img.className = 'q-image';
+    card.appendChild(img);
+  }
+
+  // Answer input
+  const saved = answers[q.id];
+
+  if (q.type === 'single') {
+    renderSingle(card, q, saved);
+  } else if (q.type === 'multi') {
+    renderMulti(card, q, saved);
+  } else if (q.type === 'freetext') {
+    renderFreetext(card, q, saved);
+  } else if (q.type === 'counter') {
+    renderCounter(card, q, saved);
+  } else if (q.type === 'number') {
+    renderNumber(card, q, saved);
+  }
+
+  c.appendChild(card);
+}
+
+function renderSingle(card, q, saved) {
+  const choices = shuffled[q.id] || q.choices;
+  const wrap = el('div','choices');
+  choices.forEach(c => {
+    const btn = el('button','choice-btn' + (saved===c?' selected':''));
+    const ind = el('span','indicator', saved===c?'✓':'');
+    btn.appendChild(ind);
+    btn.appendChild(document.createTextNode(c));
+    btn.onclick = () => {
+      answers[q.id] = c;
+      wrap.querySelectorAll('.choice-btn').forEach(b => {
+        b.classList.remove('selected');
+        b.querySelector('.indicator').textContent = '';
+      });
+      btn.classList.add('selected');
+      ind.textContent = '✓';
+    };
+    wrap.appendChild(btn);
+  });
+  card.appendChild(wrap);
+}
+
+function renderMulti(card, q, saved) {
+  const choices = shuffled[q.id] || q.choices;
+  const sel = saved || [];
+  const wrap = el('div','choices');
+  choices.forEach(c => {
+    const on = sel.includes(c);
+    const btn = el('button','choice-btn checkbox' + (on?' selected':''));
+    const ind = el('span','indicator', on?'✓':'');
+    btn.appendChild(ind);
+    btn.appendChild(document.createTextNode(c));
+    btn.onclick = () => {
+      const cur = answers[q.id] || [];
+      if (cur.includes(c)) {
+        answers[q.id] = cur.filter(x=>x!==c);
+        btn.classList.remove('selected'); ind.textContent='';
+      } else {
+        answers[q.id] = [...cur,c];
+        btn.classList.add('selected'); ind.textContent='✓';
+      }
+    };
+    wrap.appendChild(btn);
+  });
+  card.appendChild(wrap);
+}
+
+function renderFreetext(card, q, saved) {
+  const vals = saved || Array(q.fields).fill('');
+  const wrap = el('div','ft-inputs');
+  const inputs = [];
+  for (let i = 0; i < q.fields; i++) {
+    const inp = document.createElement('input');
+    inp.type='text'; inp.className='ft-input';
+    inp.placeholder='Name ' + (i+1);
+    inp.value = vals[i] || '';
+    inp.autocomplete='off'; inp.autocorrect='off'; inp.autocapitalize='words';
+    inp.oninput = () => { answers[q.id] = inputs.map(x=>x.value); };
+    inputs.push(inp);
+    wrap.appendChild(inp);
+  }
+  if (q.hint) wrap.appendChild(el('p','ft-hint', q.hint));
+  card.appendChild(wrap);
+}
+
+function renderCounter(card, q, saved) {
+  let count = saved !== undefined ? saved : 0;
+  const wrap = document.createElement('div');
+
+  const row = el('div','counter-row');
+  const btnM = el('button','counter-btn'); btnM.textContent='−'; btnM.disabled = count<=q.min;
+  const valEl = el('div','counter-val', String(count));
+  const btnP = el('button','counter-btn'); btnP.textContent='+'; btnP.disabled = count>=q.max;
+
+  const update = () => {
+    valEl.textContent = String(count);
+    answers[q.id] = count;
+    btnM.disabled = count<=q.min;
+    btnP.disabled = count>=q.max;
+  };
+  btnM.onclick = () => { if(count>q.min){ count--; update(); } };
+  btnP.onclick = () => { if(count<q.max){ count++; update(); } };
+
+  row.appendChild(btnM); row.appendChild(valEl); row.appendChild(btnP);
+  wrap.appendChild(row);
+  wrap.appendChild(el('p','counter-hint','Tippe auf + oder − um die Zahl einzustellen.'));
+  card.appendChild(wrap);
+}
+
+function renderNumber(card, q, saved) {
+  const row = el('div','kiosk-row');
+  const inp = document.createElement('input');
+  inp.type='number'; inp.className='kiosk-input';
+  inp.placeholder='?'; inp.value = saved||''; inp.min=0;
+  inp.oninput = () => { answers[q.id] = inp.value.trim(); };
+  row.appendChild(inp);
+  row.appendChild(el('span','kiosk-suffix', q.suffix));
+  card.appendChild(row);
+}
+
+// ─────────────────────────────────────────
+//  NAVIGATION
+// ─────────────────────────────────────────
+function goNext() {
+  if (idx < QUESTIONS.length-1) { idx++; render(); scrollToTop(); }
+  else showResults();
+}
+function goBack() {
+  if (idx > 0) { idx--; render(); scrollToTop(); }
+}
+function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+
+// ─────────────────────────────────────────
+//  SCORING
+// ─────────────────────────────────────────
+function isCorrect(q) {
+  const a = answers[q.id];
+  if (q.type==='single') return a === q.correct;
+  if (q.type==='multi') {
+    if (!a || !a.length) return false;
+    const cs = new Set(q.correct), as = new Set(a);
+    if (cs.size!==as.size) return false;
+    for (const c of cs) if (!as.has(c)) return false;
+    return true;
+  }
+  if (q.type==='freetext') return a ? q.check(a) : false;
+  if (q.type==='counter')  return a === q.correct;
+  if (q.type==='number')   return String(a) === String(q.correct);
+  return false;
+}
+
+function correctLabel(q) {
+  if (q.type==='multi')    return q.correct.join(', ');
+  if (q.type==='counter')  return String(q.correct);
+  if (q.type==='number')   return q.correct + ' ' + q.suffix;
+  if (q.type==='freetext') return 'Drei gültige Schweinenamen';
+  return q.correct;
+}
+
+// ─────────────────────────────────────────
+//  RESULTS
+// ─────────────────────────────────────────
+function showResults() {
+  showScreen('screen-results');
+  scrollToTop();
+
+  const total = QUESTIONS.length;
+  let score = 0;
+  const rows = QUESTIONS.map(q => { const ok=isCorrect(q); if(ok) score++; return {q,ok}; });
+  const pct = Math.round(score/total*100);
+  const tombola = pct > 80;
+
+  const inner = document.getElementById('results-inner');
+  inner.innerHTML = '';
+
+  // Score circle
+  const circle = el('div','results-score-circle');
+  circle.appendChild(el('div','rs-num', String(score)));
+  circle.appendChild(el('div','rs-den', 'von ' + total));
+  inner.appendChild(circle);
+
+  const emoji = score>=9?'🎉':score>=6?'👍':'🌱';
+  const headline = score>=9?'Fantastisch!':score>=6?'Gut gemacht!':'Weiter üben!';
+  inner.appendChild(el('div','results-title', emoji + ' ' + headline));
+  inner.appendChild(el('div','results-sub', `Du hast ${score} von ${total} Fragen richtig beantwortet (${pct} %).`));
+
+  if (tombola) {
+    const banner = el('div','tombola-banner');
+    banner.innerHTML = '<h3>🎫 Tombola-Ticket!</h3><p>Herzlichen Glückwunsch! Du hast über 80 % richtig und kannst am Sondergewinn teilnehmen. Gehe zur Info und zeige diesen Screen!</p>';
+    inner.appendChild(banner);
+  } else {
+    inner.appendChild(el('div','no-tombola', `Für die Tombola brauchst du mehr als 80 % (mindestens 10 richtige Antworten). Versuch es nochmal!`));
+  }
+
+  // Review
+  inner.appendChild(el('div','review-title','Auswertung im Überblick:'));
+  rows.forEach(({q,ok}) => {
+    const item = el('div','review-item');
+    item.appendChild(el('span','review-icon', ok?'✅':'❌'));
+    const txt = el('div');
+    txt.appendChild(el('div','review-q', q.title));
+    if (!ok) txt.appendChild(el('div','review-ans', 'Richtig: ' + correctLabel(q)));
+    item.appendChild(txt);
+    inner.appendChild(item);
+  });
+
+  const restart = el('button','btn-restart','Nochmal spielen 🔄');
+  restart.onclick = () => { showScreen('screen-start'); };
+  inner.appendChild(restart);
+}
+
+// ─────────────────────────────────────────
+//  UTIL
+// ─────────────────────────────────────────
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls)  e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+</script>
+</body>
+</html>
