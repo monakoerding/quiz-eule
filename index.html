@@ -448,8 +448,14 @@
 //  DATA
 // ─────────────────────────────────────────
 const PIG_NAMES = [
-  'ayuka','linn','lin','lynn','ria','kenny','kenni','wim',
-  "käpt'n oink","captain oink",'tess','jaques','jaquelin'
+  'ayuka','ajuka',
+  'linn','lin','lynn','lyn',
+  'ria',
+  'kenny','kenni',
+  'wim','wimm',
+  "käpt'n oink","käptn oink","captain oink",
+  'tess',
+  'jaques','jaquelin','jaque','jack'
 ];
 
 const QUESTIONS = [
@@ -481,8 +487,8 @@ const QUESTIONS = [
   },
   {
     id:'ikosaeder', title:'Ikosaeder', type:'counter',
-    q:'Wie viele Flächen hat ein Iko am Uhlenköper-Camp?\n(Der Boden zählt nicht.)',
-    min:0, max:25, correct:10
+    q:'Wie viele dreieckige Flächen hat ein Iko am Uhlenköper-Camp?\n(Der Boden zählt nicht.)',
+    min:0, max:25, correct:15
   },
   {
     id:'flatter', title:'Flatter Flatter', type:'single',
@@ -517,7 +523,7 @@ const QUESTIONS = [
   {
     id:'fuhrpark', title:'Fuhrpark', type:'single',
     q:'Was kann man am Uhlenköper-Camp (bisher) nicht mieten?',
-    choices:['Hubschrauber','Boot','E-Auto','Fahrrad','E-Tandem'],
+    choices:['Hubschrauber','Kanu','E-Auto','Fahrrad','E-Tandem'],
     correct:'Hubschrauber'
   },
   {
@@ -800,6 +806,19 @@ function showResults() {
   const restart = el('button','btn-restart','Nochmal spielen 🔄');
   restart.onclick = () => { showScreen('screen-start'); };
   inner.appendChild(restart);
+
+  // P.S. pig names
+  const ps = document.createElement('div');
+  ps.style.cssText = 'margin-top:28px; padding-top:20px; border-top:2px dashed var(--border);';
+  const psImg = document.createElement('img');
+  psImg.src = 'Schwein.JPG'; psImg.alt = 'Die Schweine';
+  psImg.style.cssText = 'width:100%; border-radius:12px; margin-bottom:14px; border:2px solid var(--border);';
+  ps.appendChild(psImg);
+  const psLabel = el('p','','');
+  psLabel.innerHTML = '<strong>P.S.:</strong> Die Schweine heißen: <strong>Ayuka, Linn, Ria, Kenny, Wim, Käpt\'n Oink, Tess, Jaques</strong> 🐷';
+  psLabel.style.cssText = 'font-size:0.88em; color:var(--text-muted); line-height:1.6; text-align:center;';
+  ps.appendChild(psLabel);
+  inner.appendChild(ps);
 }
 
 // ─────────────────────────────────────────
