@@ -395,7 +395,7 @@
       </div>
       <div class="start-title">Das große Jubiläums-Quiz!</div>
       <p class="start-sub">
-        Teste dein Wissen über den Uhlenköper-Camp und sichere dir eine Chance auf den Sondergewinn der Tombola!
+        Teste dein Wissen über das Uhlenköper-Camp und sichere dir ein Goodie am Merch Stand!
       </p>
       <div class="info-row">
         <div class="info-box">
@@ -404,9 +404,9 @@
           <div class="ib-lbl">Fragen</div>
         </div>
         <div class="info-box">
-          <div class="ib-icon">🎫</div>
+          <div class="ib-icon">🎁</div>
           <div class="ib-val">&gt; 80 %</div>
-          <div class="ib-lbl">für Tombola</div>
+          <div class="ib-lbl">für Goodie</div>
         </div>
         <div class="info-box">
           <div class="ib-icon">🏕️</div>
@@ -460,12 +460,6 @@ const PIG_NAMES = [
 
 const QUESTIONS = [
   {
-    id:'wortsalat', title:'Wortsalat', type:'single',
-    q:'Was ist auf dem Dach?',
-    choices:['Lunarlüneburgen','Stellaruelzen','Solarcellen'],
-    correct:'Solarcellen'
-  },
-  {
     id:'bunt', title:'Bunt', type:'single',
     q:'Welches Motto wird von den drei Farben des Uhlenköper-Camp Logos repräsentiert?',
     choices:['Zelten, Baden, Paddeln','Wiese, Sonne, Himmel','Reisen, Essen, Schlafen'],
@@ -486,15 +480,16 @@ const QUESTIONS = [
     }
   },
   {
-    id:'ikosaeder', title:'Ikosaeder', type:'counter',
-    q:'Wie viele dreieckige Flächen hat ein Iko am Uhlenköper-Camp?\n(Der Boden zählt nicht.)',
-    min:0, max:25, correct:15
-  },
-  {
     id:'flatter', title:'Flatter Flatter', type:'single',
     q:'Welches der folgenden ist KEIN Schmetterling?',
     choices:['Admiral','Kleiner Fuchs','Limonenfalter','Großes Ochsenauge'],
     correct:'Limonenfalter'
+  },
+  {
+    id:'wortsalat', title:'Wortsalat', type:'single',
+    q:'Was ist auf dem Dach?',
+    choices:['Lunarlüneburg','Stellaruelzen','Solarcelle'],
+    correct:'Solarcelle'
   },
   {
     id:'weyhe', title:'Weyhe', type:'single',
@@ -531,6 +526,11 @@ const QUESTIONS = [
     q:'Welche heimischen Pflanzen kann man hier finden?\n(Mehrere Antworten möglich)',
     choices:['Spitzwegerich','Holunder','Urwaldmammutbaum','Haselnuss','Magnolienbaum','Froschlöffel'],
     correct:['Spitzwegerich','Holunder','Haselnuss','Froschlöffel']
+  },
+  {
+    id:'ikosaeder', title:'Ikosaeder', type:'counter',
+    q:'Wie viele dreieckige Flächen hat ein Iko am Uhlenköper-Camp?\n(Der Boden ist ein Fünfeck.)',
+    min:0, max:25, correct:15
   }
 ];
 
@@ -785,10 +785,10 @@ function showResults() {
 
   if (tombola) {
     const banner = el('div','tombola-banner');
-    banner.innerHTML = '<h3>🎫 Tombola-Ticket!</h3><p>Herzlichen Glückwunsch! Du hast über 80 % richtig und kannst am Sondergewinn teilnehmen. Gehe zur Info und zeige diesen Screen!</p>';
+    banner.innerHTML = '<h3>🎁 Goodie gesichert!</h3><p>Herzlichen Glückwunsch! Du hast über 80 % richtig und bekommst ein Goodie. Gehe zum Merch Stand am Uhlenköper-Camp und zeige diesen Screen!</p>';
     inner.appendChild(banner);
   } else {
-    inner.appendChild(el('div','no-tombola', `Für die Tombola brauchst du mehr als 80 % (mindestens 10 richtige Antworten). Versuch es nochmal!`));
+    inner.appendChild(el('div','no-tombola', `Für ein Goodie brauchst du mehr als 80 % (mindestens 10 richtige Antworten). Versuch es nochmal!`));
   }
 
   // Review
