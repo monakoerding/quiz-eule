@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>25 Jahre Uhlenköper-Camp – Quiz</title>
-  <link rel="icon" type="image/png" href="Logo.png">
+  <title>Campingplatz Quiz – Uhlenköper-Camp</title>
+  <link rel="icon" type="image/svg+xml" href="2026_LogoUC_mitRand.svg">
   <style>
     :root {
       --green-dark:  #1e5c3a;
@@ -34,15 +34,67 @@
     /* ── HEADER ── */
     .site-header {
       background: linear-gradient(150deg, var(--green-dark) 0%, var(--green-mid) 100%);
-      padding: 18px 20px 14px;
+      padding: 10px 20px;
       text-align: center;
       box-shadow: 0 2px 12px rgba(0,0,0,0.18);
       position: sticky;
       top: 0;
       z-index: 10;
     }
-    .site-header img { height: 44px; vertical-align: middle; margin-right: 10px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3)); }
-    .site-header span { color: #fff; font-size: 1.05em; font-weight: 700; vertical-align: middle; letter-spacing: 0.2px; }
+    .header-logo-bg {
+      display: inline-block;
+      background: #fff;
+      border-radius: 10px;
+      padding: 6px 18px 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .header-svg-logo {
+      height: 40px;
+      display: block;
+    }
+
+    /* ── OWL BUBBLE ── */
+    .owl-wrap {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .speech-bubble {
+      position: relative;
+      background: var(--green-pale);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 0.92em;
+      font-weight: 600;
+      color: var(--green-dark);
+      max-width: 220px;
+      line-height: 1.4;
+    }
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      right: -14px;
+      bottom: 16px;
+      border: 7px solid transparent;
+      border-left-color: var(--border);
+    }
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      right: -11px;
+      bottom: 17px;
+      border: 6px solid transparent;
+      border-left-color: var(--green-pale);
+      z-index: 1;
+    }
+    .owl-img {
+      height: 88px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 6px rgba(30,92,58,0.18));
+    }
 
     /* ── CONTAINER ── */
     .wrap { max-width: 620px; margin: 0 auto; padding: 20px 16px 0; }
@@ -381,8 +433,9 @@
 <body>
 
 <header class="site-header">
-  <img src="Logo.png" alt="Logo">
-  <span>25 Jahre Uhlenköper-Camp</span>
+  <div class="header-logo-bg">
+    <img src="2026_LogoUC_mitRand.svg" alt="Uhlenköper-Camp" class="header-svg-logo">
+  </div>
 </header>
 
 <div class="wrap">
@@ -390,12 +443,13 @@
   <!-- ════════════ START ════════════ -->
   <div id="screen-start" class="screen active">
     <div class="card anim">
-      <div class="start-logo-wrap">
-        <img src="Logo.png" alt="Uhlenköper-Camp Logo">
+      <div class="owl-wrap">
+        <div class="speech-bubble">Wie gut kennst du unseren Campingplatz? Teste dein Wissen!</div>
+        <img src="EuleGruppe.jpg" alt="Quiz-Eule" class="owl-img">
       </div>
-      <div class="start-title">Das große Jubiläums-Quiz!</div>
+      <div class="start-title">Campingplatz Quiz</div>
       <p class="start-sub">
-        Teste dein Wissen über das Uhlenköper-Camp und sichere dir ein Goodie am Merch Stand!
+        Teste dein Wissen über das Uhlenköper-Camp – und sichere dir ein kleines Geschenk an der Rezeption!
       </p>
       <div class="info-row">
         <div class="info-box">
@@ -406,7 +460,7 @@
         <div class="info-box">
           <div class="ib-icon">🎁</div>
           <div class="ib-val">&gt; 80 %</div>
-          <div class="ib-lbl">für Goodie</div>
+          <div class="ib-lbl">für Geschenk</div>
         </div>
         <div class="info-box">
           <div class="ib-icon">🏕️</div>
@@ -785,10 +839,10 @@ function showResults() {
 
   if (tombola) {
     const banner = el('div','tombola-banner');
-    banner.innerHTML = '<h3>🎁 Goodie gesichert!</h3><p>Herzlichen Glückwunsch! Du hast über 80 % richtig und bekommst ein Goodie. Gehe zum Merch Stand am Uhlenköper-Camp und zeige diesen Screen!</p>';
+    banner.innerHTML = '<h3>🎁 Kleines Geschenk für dich!</h3><p>Super! Du hast über 80 % richtig beantwortet. Geh zur Rezeption, zeige diesen Screen und hole dir dein kleines Überraschungsgeschenk ab!</p>';
     inner.appendChild(banner);
   } else {
-    inner.appendChild(el('div','no-tombola', `Für ein Goodie brauchst du mehr als 80 % (mindestens 10 richtige Antworten). Versuch es nochmal!`));
+    inner.appendChild(el('div','no-tombola', `Für ein kleines Geschenk brauchst du mehr als 80 % (mindestens 10 richtige Antworten). Versuch es nochmal – du schaffst das!`));
   }
 
   // Review
